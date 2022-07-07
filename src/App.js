@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+import TodoList from './components/TodoList'
+import Input from './components/Input'
+import {useDispatch} from 'react-redux'
+import {addTodo} from "./redux/reducers/todoSlice";
+
+const App = () => {
+    const [title, setTitle] = useState('')
+    const dispatch = useDispatch()
+
+    const handleAction = () => {
+        if (title.trim().length) {
+            dispatch(addTodo({title}))
+            setTitle('')
+
+        }
+    }
+
+    return (
+        <div
+            className={
+                'bg-gradient-to-r from-red-700 via-violet-900 to-purple-900 items-center  flex flex-col h-screen w-screen'
+            }
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+            <h1 className={'font-extrabold text-4xl border-b-2 border-purple-300'}>
+                Task list
+            </h1>
+            <Input
+                value={title}
+                onValueChange={setTitle}
+                handleAction={handleAction}
+            />
+            <TodoList/>
+        </div>
+    )
 }
 
-export default App;
+export default App
+
+
+// TODO: fix App re-render on input change
+// TODO: implement editing todo
